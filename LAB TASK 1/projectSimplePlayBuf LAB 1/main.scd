@@ -24,7 +24,8 @@
 		)
 		.dur_(~buffer.duration)
 		.bufnum_(~buffer)
-		.outBus_()
+		.outBus_(~audioBuss)
+		.gain_(-12)
 		.play;
 
 		~reverbNote = ~myPlayBufPNotes['reverb'].note(addAction: 'tail')

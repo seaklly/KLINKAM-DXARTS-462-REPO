@@ -29,31 +29,30 @@ MIDIFunc.trace();
 
 	~audioBuss = CtkAudio.play(2, server: ~server);
 
-		~rateSpec = ControlSpec(0.25, 4, 'exp');
-		~panSpec = ControlSpec(-45, 45, 'lin');
+	~rateSpec = ControlSpec(0.25, 4, 'exp');
+	~panSpec = ControlSpec(-45, 45, 'lin');
 
-		~buffer = ~buffers.choose;
-		~start = 0.0;
-		~note = ~myPlayBufPNotes[\dxarts46x_stereoPlayBuf].note(
-			starttime: ~start,
-			duration: ~buffer.duration
-		)
-		.dur_(~buffer.duration)
-		.bufnum_(~buffer)
-		.outBus_(~audioBuss)
-		.loop_(1)
-		.play;
+	~buffer = ~buffers.choose;
+	~start = 0.0;
+	~note = ~myPlayBufPNotes[\dxarts46x_stereoPlayBuf].note(
+		starttime: ~start,
+	)
+	.dur_(~buffer.duration)
+	.bufnum_(~buffer)
+	.outBus_(~audioBuss)
+	.loop_(1)
+	.play;
 
-		~reverbNote = ~myPlayBufPNotes['reverb'].note(addAction: 'tail')
+	~reverbNote = ~myPlayBufPNotes['reverb'].note(addAction: 'tail')
 	.in_(~audioBuss).play;
 
-		~midiRate = MIDIFunc.cc({ |val, num, chan, src|
-			~note.rate_(~rateSpec.map(val.linlin(0, 127, 0, 1)));
-		}, ccNum: 0);
+	~midiRate = MIDIFunc.cc({ |val, num, chan, src|
+		~note.rate_(~rateSpec.map(val.linlin(0, 127, 0, 1)));
+	}, ccNum: 0);
 
-		~midiPan = MIDIFunc.cc({ |val, num, chan, src|
-			~note.rate(~panSpec.map(val.linlin(0, 127, 0, 1)));
-		}, ccNum: 1);
+	~midiPan = MIDIFunc.cc({ |val, num, chan, src|
+		~note.panAngle_(~panSpec.map(val.linlin(0, 127, 0, 1)));
+	}, ccNum: 1);
 
 })
 
